@@ -381,6 +381,44 @@ class RAGEngine {
   }
 
   // ============================================================
+  // 自学成长：把真实问答加入知识库
+  // ============================================================
+
+  /**
+   * 把一段真实问答加入知识库
+   * @param {string} question - 新生问的问题
+   * @param {string} answer - 你给的靠谱回答
+   * @returns {{ success: boolean, chunkCount: number, docTitle: string }}
+   */
+  addQA(question, answer) {
+    const q = question.replace(/<[^>]*>/g, '').trim();
+    const a = answer.replace(/<[^>]*>/g, '').trim();
+    if (!q || !a) throw new Error('问题和答案都不能为空');
+
+    // 把问答写入 "真实问答收集" 文档（追加模式）
+    const qaFile = path.join(__dirname, '..', 'data', 'documents', '99-真实问答收集.txt');
+    const timestamp = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+    const entry = `\n\n【提问时间】${timestamp}\n【用户提问】${q}\n【学长回答】${a}\n`;
+    fs.appendFileSync(qaFile, entry, 'utf-8');
+
+    // 把这个问答作为新文档加入知识库索引
+    const content = `${entry}\n`;
+    const chunks = this._splitText(content);
+    const docId = `qa_${Date.now()}`;
+    const docTitle = `99-真实问答收集`;
+    this.vectorStore.addDocument(docId, docTitle);
+    for (const chunk of chunks) {
+      this.vectorStore.addChunk(docId, chunk, null, docTitle);
+    }
+
+    // 清除缓存（下次同样的提问会重新检索）
+    this.answerCache.clear();
+
+    console.log(`[RAG] 新问答已入库: "${q.slice(0, 40)}..." → ${chunks.length} 个片段`);
+    return { success: true, chunkCount: chunks.length, docTitle };
+  }
+
+  // ============================================================
   // 核心流程：聊天（非流式）
   // ============================================================
 

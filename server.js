@@ -331,6 +331,25 @@ app.post('/api/admin/retrieve-test', adminAuth, async (req, res) => {
 // ============================================================
 
 /**
+ * POST /api/knowledge/add - 把真实问答加入知识库（自学成长）
+ * Body: { question, answer }
+ */
+app.post('/api/knowledge/add', adminAuth, async (req, res) => {
+  try {
+    const { question, answer } = req.body;
+    if (!question || !answer) {
+      return res.status(400).json({ error: '需要提供 question 和 answer' });
+    }
+    const result = rag.addQA(question, answer);
+    console.log(`[API] 新知识入库: "${question.slice(0, 30)}..."`);
+    res.json({ success: true, message: '问答已加入知识库 ✅', ...result });
+  } catch (err) {
+    console.error('[API] 知识入库失败:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
  * GET /api/health - 健康检查
  */
 app.get('/api/health', (req, res) => {
