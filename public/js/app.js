@@ -69,9 +69,9 @@
         if (!fixedUrl.startsWith('/images/') && !fixedUrl.startsWith('http') && !fixedUrl.startsWith('data:')) {
           fixedUrl = '/images/' + fixedUrl.replace(/^\.?\//, '');
         }
-        // 兜底2：缺扩展名时自动加 .jpeg
+        // 兜底2：缺扩展名时自动加 .webp
         if (fixedUrl.startsWith('/images/') && !/\.[a-zA-Z]+$/.test(fixedUrl.split('/').pop())) {
-          fixedUrl = fixedUrl + '.jpeg';
+          fixedUrl = fixedUrl + '.webp';
         }
         return `<img src="${fixedUrl}" alt="${alt}" class="chat-image" data-src="${fixedUrl}" style="max-width:100%;border-radius:12px;margin:8px 0;cursor:pointer;" loading="lazy" onerror="this.style.opacity=0.3;this.alt='图片加载失败'">`;
       })

@@ -66,16 +66,16 @@ class RAGEngine {
 
 【图片调用规则（修正版）】
 
-核心原则：在该配图的地方配图，不该配的绝对不乱配。
+核心原则：在该配图的地方配图，不该配的绝对不乱配。配图时，先写一句引导文字（比如"照片马上就来，学长翻给你看……"），然后再用图片语法输出图片，不要直接甩图片链接。
 
-⚠️ 配图格式：必须用 Markdown 图片语法（前面是叹号 + 中括号）
-格式示例： 叹号【描述文字】(/images/文件名.jpeg)
-- 错误：括号配图：xxx.jpeg —— 纯文字，不会显示为图片
-- 错误：叹号【描述】(xxx.jpeg) —— 缺少 /images/ 前缀
-- 正确：叹号【四人间宿舍】(/images/dorm-4-1.jpeg)
+⚠️ 所有图片文件都是 `.webp` 格式（已压缩优化），路径必须是 /images/文件名.webp
+格式示例： 叹号【四人间宿舍】(/images/dorm-4-1.webp)
+- 错误：括号配图：xxx.webp —— 纯文字，不会显示为图片
+- 错误：叹号【描述】(xxx.webp) —— 缺少 /images/ 前缀
+- 正确：叹号【四人间宿舍】(/images/dorm-4-1.webp)
 
 1. 必须配图的情况（高置信度触发）：
-当用户明确问到以下具体场景，且知识库里确有对应分类的图片时，必须配图：
+当用户明确问到以下具体场景，且知识库里确有对应分类的图片时，必须配图。**先写一句引导文字，再输出图片**：
 - 问宿舍内部、几人间、床铺、书桌、独立卫浴 → 查 寝室环境
 - 问食堂、饭菜、打饭流程 → 查 食堂环境
 - 问操场、运动、体育馆 → 查 操场环境
@@ -92,13 +92,13 @@ class RAGEngine {
 用一句自然的话介绍图片，比如"这是咱们宿舍的实拍，上床下桌带独立卫浴"。
 
 可用图片对应关系（记住文件名）：
-- 寝室：dorm-4-1.jpeg（四人寝）、dorm-7-1.jpeg（七人寝）
-- 食堂：canteen-2.jpeg、canteen-3.jpeg、canteen-4.jpeg
-- 校园风景：campus-2.jpeg ~ campus-11.jpeg
-- 操场：playground-2.jpeg、playground-3.jpeg
-- 篮球场：basketball-2.jpeg
-- 学校地图：campus-map-2.jpeg
-- 体育馆：gym-2.jpeg、gym-3.jpeg
+- 寝室：dorm-4-1.webp（四人寝）、dorm-7-1.webp（七人寝）
+- 食堂：canteen-2.webp、canteen-3.webp、canteen-4.webp
+- 校园风景：campus-2.webp ~ campus-11.webp
+- 操场：playground-2.webp、playground-3.webp
+- 篮球场：basketball-2.webp
+- 学校地图：campus-map-2.webp
+- 体育馆：gym-2.webp、gym-3.webp
 
 关键修正：把"100%把握才配"改成"只要问题明确对应某个场景分类，就放心配"。
 
