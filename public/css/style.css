@@ -669,3 +669,121 @@ body {
 .chat-image:active {
   opacity: 0.7;
 }
+
+/* ============================================================
+   微信二维码弹窗
+   ============================================================ */
+.wechat-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wechat-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+}
+
+.wechat-modal {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  width: 280px;
+  max-width: 90vw;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: wechatPop 0.3s ease-out;
+}
+
+@keyframes wechatPop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.wechat-close {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: #f0f0f0;
+  border: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wechat-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.wechat-modal h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.wechat-modal p {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #666;
+}
+
+.wechat-qr-wrapper {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.wechat-qr-img {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: 0 auto;
+}
+
+.wechat-tip {
+  margin: 12px 0 0 !important;
+  font-size: 12px;
+  color: #4F8CFF;
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .wechat-modal {
+    background: #1E2A4A;
+  }
+  .wechat-modal h3 {
+    color: #f0f0f0;
+  }
+  .wechat-modal p {
+    color: #aab;
+  }
+  .wechat-qr-wrapper {
+    background: #2A2A4A;
+  }
+  .wechat-close {
+    background: #2A2A4A;
+    color: #ccc;
+  }
+}
+
+/* 微信按钮用绿色提示 */
+#wechatBtn {
+  font-size: 18px;
+}
+#wechatBtn:hover {
+  color: #07C160;
+}
