@@ -36,6 +36,28 @@ const rag = new RAGEngine({
   embeddingApiKey: process.env.SILICONFLOW_API_KEY || apiKey,
 });
 
+// 启动时自动从 data/documents/ 加载所有 .txt 进知识库
+async function autoLoadKB() {
+  try {
+    const files = fs.readdirSync(UPLOAD_DIR).filter(f => f.endsWith('.txt'));
+    console.log('  📚 自动加载知识库，共', files.length, '个文档...');
+    for (const f of files) {
+      try {
+        const fpath = path.join(UPLOAD_DIR, f);
+        const existing = rag.vectorStore.getDocuments().find(d => d.title === f);
+        if (existing) continue;
+        await rag.processDocument(fpath, f);
+        console.log('    ✅', f);
+      } catch (e) {
+        console.warn('    ⚠️', f, '-', e.message);
+      }
+    }
+    console.log('  📚 加载完成, 共', rag.vectorStore.getDocuments().length, '个文档,', rag.vectorStore.getChunkCount(), '个片段');
+  } catch (e) {
+    console.error('  ❌ autoLoadKB failed:', e.message);
+  }
+}
+
 // ============================================================
 // 中间件
 // ============================================================
@@ -409,7 +431,7 @@ app.use((err, req, res, next) => {
 // ============================================================
 // 启动服务
 // ============================================================
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log('============================================');
   console.log('  SS学长来帮你 - 校园AI助手');
   console.log('============================================');
@@ -417,6 +439,9 @@ app.listen(PORT, () => {
   console.log(`  聊天页面: http://localhost:${PORT}`);
   console.log(`  管理后台: http://localhost:${PORT}/admin`);
   console.log(`  API健康检查: http://localhost:${PORT}/api/health`);
+  console.log('============================================');
+  // 启动后异步加载知识库
+  await autoLoadKB();
   console.log('============================================');
   console.log(`  知识库状态: ${rag.vectorStore.getDocuments().length} 个文档, ${rag.vectorStore.getChunkCount()} 个知识片段`);
   console.log('============================================');
