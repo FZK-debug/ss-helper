@@ -28,10 +28,12 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 const apiKey = process.env.DEEPSEEK_API_KEY || process.env.SILICONFLOW_API_KEY || '';
 const isDeepSeek = !!process.env.DEEPSEEK_API_KEY;
 const rag = new RAGEngine({
-  apiKey,
+  apiKey: process.env.SILICONFLOW_API_KEY || apiKey,  // embedding 始终用硅基流动
   baseURL: isDeepSeek ? 'https://api.deepseek.com/v1' : 'https://api.siliconflow.cn/v1',
-  chatModel: isDeepSeek ? 'deepseek-v4-flash' : 'deepseek-ai/DeepSeek-V4-Flash',
-  embeddingModel: isDeepSeek ? 'deepseek-embedding' : 'BAAI/bge-m3',
+  chatModel: isDeepSeek ? 'deepseek-chat' : 'deepseek-ai/DeepSeek-V4-Flash',
+  embeddingModel: 'BAAI/bge-m3',  // embedding 统一用硅基流动的免费模型
+  embeddingBaseURL: 'https://api.siliconflow.cn/v1',  // embedding 走硅基流动
+  embeddingApiKey: process.env.SILICONFLOW_API_KEY || apiKey,
 });
 
 // ============================================================
