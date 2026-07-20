@@ -1,5 +1,5 @@
 /**
- * SS学长来帮你 - 前端聊天应用
+ * 泸职院AI助手 - 前端聊天应用
  * 移动端优先 · SSE流式响应 · 微信兼容
  */
 
@@ -165,12 +165,12 @@
     // 标题
     const title = document.createElement('div');
     title.className = 'welcome-title';
-    title.textContent = 'SS学长';
+    title.textContent = '泸职院助手';
 
     // 副标题
     const sub1 = document.createElement('div');
     sub1.className = 'welcome-sub';
-    sub1.textContent = '四川化工职业技术学院';
+    sub1.textContent = '泸州职业技术学院';
     const sub2 = document.createElement('div');
     sub2.className = 'welcome-sub';
     sub2.textContent = '新生专属AI助手 · 24h在线';
@@ -700,7 +700,7 @@
     // 初始化微信二维码
     initWechat();
 
-    console.log('[SS学长] 初始化完成 🚀');
+    console.log('[泸职院助手] 初始化完成 🚀');
   }
 
   /** 初始化图片查看器（点击放大） */
